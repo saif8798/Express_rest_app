@@ -4,9 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const { v4: uuidv4 } = require("uuid");
-
-const feedRouter = require("./router/feed");
-const authRouter = require("./router/auth");
+const { graphqlHTTP } = require("express-graphql");
 
 const app = express();
 
@@ -47,8 +45,23 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/feed", feedRouter);
-app.use("/auth", authRouter);
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: require("./graphql/schema"),
+    rootValue: require("./graphql/resolvers"),
+    graphiql: true,
+    formatError(err) {
+      if (!err.originalError) {
+        return err;
+      }
+      const data = err.originalError.data;
+      const message = err.message || "An error occurred.";
+      const code = err.originalError.code || 500;
+      return { message: message, status: code, data: data };
+    },
+  }),
+);
 
 app.use((error, req, res, next) => {
   console.log(error);
@@ -62,10 +75,6 @@ mongoose
     "mongodb+srv://syed:test123@cluster0.05z1jz5.mongodb.net/messages?appName=Cluster0",
   )
   .then(() => {
-    const server = app.listen(8080);
-    const io = require("./socket").init(server);
-    io.on("connection", (socket) => {
-      console.log("Client connected");
-    });
+    app.listen(8080);
   })
   .catch((err) => console.log(err));
