@@ -19,7 +19,11 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.3.0",
     "multer": "^2.1.1",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "^2.7.0",
+    "oci-aispeech": "^2.131.0",
+    "oci-common": "^2.131.0",
+    "oci-generativeaiinference": "^2.131.0",
+    "oci-sdk": "^2.131.0",
     "socket.io": "^4.8.3",
     "uuid": "^8.3.2"
   },

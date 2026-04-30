@@ -15,6 +15,7 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
+app.use(express.json());
 
 app.use("/dashboard", dashboardRouter);
 app.use("/auth", authRouter);
@@ -32,9 +33,6 @@ mongoose
   )
   .then(() => {
     const server = app.listen(8080);
-    const io = require("./socket").init(server);
-    io.on("connection", (socket) => {
-      console.log("Client connected");
-    });
+    console.log("server running on port 8080");
   })
   .catch((err) => console.log(err));

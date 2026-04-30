@@ -104,7 +104,7 @@ const buildLookups = (req, options = {}) => {
 
     if (needMonth && req.query.month) {
       pipeline.push({
-        $match: { "date.month_name": req.query.month },
+        $match: { "date.month_name": req.query.month, "date.fiscal_year": req.query.year },
       });
     }
   }
