@@ -4,6 +4,8 @@ const {
   toMultiValue,
   buildLookups,
   buildMatch,
+  getOACScreenshotBuffer,
+  captureOACScreenshot
 } = require("../middleware/dashboardutil");
 const client = require("../middleware/oci");
 const speechClient = require("../middleware/speech");
@@ -503,6 +505,19 @@ ${JSON.stringify(kpiData, null, 2)}
     if (!err.statusCode) {
       err.statusCode = 500;
     }
+    next(err);
+  }
+};
+
+exports.getDashboardScreenshot = async (req, res, next) => {
+   try {
+    const buffer = await getOACScreenshotBuffer();
+
+    res.set("Content-Type", "image/png");
+    res.send(buffer);
+
+  } catch (err) {
+    err.statusCode = err.statusCode || 500;
     next(err);
   }
 };

@@ -4,6 +4,8 @@ const dashboardController = require("../controller/dashboard");
 
 router.post("/summary", dashboardController.postDashboardSummary);
 
+router.get("/summaryimage", dashboardController.getDashboardScreenshot);
+
 router.post("/summaryaudio", dashboardController.postSummaryAudio);
 
 router.get("/kpis", dashboardController.getKpis);
